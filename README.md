@@ -62,6 +62,12 @@ pip install -r requirements.txt
     ```sh
     pyinstaller --onefile --noconsole --add-data "templates;templates" --add-data "static;static" --windowed main.py
     ```
+
+
+
+启动成功后，浏览器会自动开启并显示主页（`http://127.0.0.1:<port>/`）。
+
+```markdown
 当您使用PyInstaller打包Python脚本时，如果不添加--onefile（或-F）参数，PyInstaller会采用默认的​​文件夹模式​​（--onedir或-D）进行打包
 。这种模式下，打包结果不是一个单一的可执行文件（exe），而是一个包含多个文件和子目录的文件夹
 。
@@ -79,8 +85,29 @@ dist/
     ├── ...（其他可能的依赖目录）
     └── YourAppName.exe.manifest  # （可能存在的）应用程序清单文件
 
+5. 目录结构示例​​
+一个推荐的项目和分发结构如下：
+YourAppProject/                 # 您的项目根目录
+├── src/
+│   ├── main.py                 # 🎯 主程序入口脚本
+│   └── plugin_loader.py       # 插件加载器模块
+├── plugins/                    # 📁 插件目录（**不打包进exe**）
+│   ├── developer_tool_1.py    # 开发者提供的工具1
+│   └── developer_tool_2.py    # 开发者提供的工具2
+├── build/                     # 🔨 PyInstaller临时构建目录
+├── dist/                      # 📦 打包输出目录
+│   └── YourAppName/           # 最终生成的文件夹模式exe
+│       ├── YourAppName.exe    # 主程序
+│       └── ...（其他依赖文件）
+└── your_main_script.spec      # ⚙️ PyInstaller配置文件
+​​分发与使用流程：​​
+您将dist/YourAppName整个文件夹分发给最终用户。
+开发者（或用户）可以在YourAppName文件夹旁边（或程序指定的任意位置）创建一个plugins文件夹。
+开发者将他们编写的xxx.py插件文件放入plugins文件夹。
+用户运行YourAppName.exe，主程序会自动扫描并加载plugins目录下的所有有效插件。
 
-启动成功后，浏览器会自动开启并显示主页（`http://127.0.0.1:<port>/`）。
+```
+
 
 ## API 文档
 - **主页**：
