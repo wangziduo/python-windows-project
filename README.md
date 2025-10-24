@@ -62,7 +62,23 @@ pip install -r requirements.txt
     ```sh
     pyinstaller --onefile --noconsole --add-data "templates;templates" --add-data "static;static" --windowed main.py
     ```
-    生成的exe会再目录的dist文件夹下。双击打开
+当您使用PyInstaller打包Python脚本时，如果不添加--onefile（或-F）参数，PyInstaller会采用默认的​​文件夹模式​​（--onedir或-D）进行打包
+。这种模式下，打包结果不是一个单一的可执行文件（exe），而是一个包含多个文件和子目录的文件夹
+。
+​​生成的文件结构通常如下所示：​​
+dist/
+└── YourAppName/          # 文件夹名称通常与您的入口脚本同名（例如`main.py`对应`main`）
+    ├── YourAppName.exe    # 🎯 主可执行程序，用户双击此文件启动应用
+    ├── python3X.dll       # Python解释器动态链接库（例如python310.dll）
+    ├── base_library.zip   # Python标准库的压缩包
+    ├── lib/               # 存放所有依赖的第三方库（.pyc文件）
+    │   ├── encodings/
+    │   ├── collections/
+    │   └── ...（其他库，如numpy, pandas等）
+    ├── PySide2/          # 如果使用了GUI库（如PyQt, PySide），会有对应的目录
+    ├── ...（其他可能的依赖目录）
+    └── YourAppName.exe.manifest  # （可能存在的）应用程序清单文件
+
 
 启动成功后，浏览器会自动开启并显示主页（`http://127.0.0.1:<port>/`）。
 
